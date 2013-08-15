@@ -1,0 +1,24 @@
+
+body
+  { width:100em; }
+ul
+  { list-style: none; }
+#navigation
+  { background:#ccc; }
+#lists .header
+  { background:#efefef; }
+#lists ul
+  { background:#ffefdd; }
+#lists li
+  { background:#fefefe; }
+
+#navigation
+  { height:2em; width:100%; }
+#lists ul
+  { float:left; bottom:0; top:2em; width: 20em; margin: 0; padding:0; 
+  height:40em; border-right:.1em solid #ccc; }
+#lists .header
+  { text-align:center; padding:.4em 0; }
+#lists li
+  { line-height:1.6em; padding:.4em .8em; border:.1em solid #ddd; font-size:.9em; }
+
