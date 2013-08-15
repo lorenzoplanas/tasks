@@ -1,6 +1,6 @@
 $('#lists .task').bind('dragstart', function(event) {
-  var element_html = $(event.target).prop("outerHTML");
-  event.originalEvent.dataTransfer.setData("text/plain", element_html);
+  var id = event.target.getAttribute('id');
+  event.originalEvent.dataTransfer.setData("text/plain", id);
 });
 
 $('#lists ul').bind('dragover', function(event) {
@@ -9,15 +9,16 @@ $('#lists ul').bind('dragover', function(event) {
 
 $('#lists ul').bind('drop', function(event) {
   event.preventDefault();
-  var element_html = event.originalEvent.dataTransfer.getData("text/plain");
-  var target = $(event.target);
+  var id      = event.originalEvent.dataTransfer.getData("text/plain");
+  var element = document.getElementById(id);
+  var target  = $(event.target);
 
   if (target.prop('tagName').toLowerCase() == 'ul') {
-    target.append(element_html);
+    target.append(element);
   }
 
   if (target.prop('tagName').toLowerCase() == 'li') {
-    target.after(element_html);
+    target.after(element);
   }
 });
 
