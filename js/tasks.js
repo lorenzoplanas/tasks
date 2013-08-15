@@ -47,9 +47,20 @@ var drop_task = function(target, task) {
     target.after(task);
 }
 
-var lists = $('#lists ul');
-generate_sample_tasks(lists);
+var generate_sample_list = function(id, index) {
+  list    = $('<ul />')
+  header  = $('<li />').html('List ' + index).addClass('header')
 
-lists.bind('dragover', on_dragover);
-lists.bind('drop', on_drop);
+  list.bind('dragover', on_dragover);
+  list.bind('drop', on_drop);
+  list.append(header);
+  $('#' + lists_id).append(list);
+}
+
+var lists_id = 'lists'
+for (i = 0; i < 3; i++)
+  generate_sample_list(lists_id, i + 1);
+
+var lists = $('#' + lists_id).children();
+generate_sample_tasks(lists);
 
