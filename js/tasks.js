@@ -3,6 +3,7 @@ var Task = Backbone.Model.extend({
 
 var Tasks = Backbone.Collection.extend({
   model: Task,
+  localStorage: new Backbone.LocalStorage("todos-backbone")
 });
 
 var List = Backbone.Model.extend({
@@ -10,6 +11,7 @@ var List = Backbone.Model.extend({
 
 var Lists = Backbone.Collection.extend({
   model: List,
+  localStorage: new Backbone.LocalStorage("todos-backbone")
 });
 
 var TaskView = Backbone.View.extend({
