@@ -27,11 +27,12 @@ var create_task = function(list, task_name, id) {
 }
 
 var generate_sample_tasks = function(lists) {
-  for (i = 1; i <= lists.length; i++) {
-    list = $(lists[i - 1]);
+  var tasks_per_list = 5;
+  for (i = 0; i < lists.length; i++) {
+    list = $(lists[i]);
 
-    for (j = 1; j < 4; j ++) {
-      task_id   = i + '.' + j;
+    for (j = 0; j < tasks_per_list; j ++) {
+      task_id   = (i + 1) + '.' + (j + 1);
       task_name = 'Task ' + task_id;
       create_task(list, task_name, task_id);
     }
