@@ -1,8 +1,17 @@
-var app = app || {};
+define([
+  'underscore',
+  'backbone',
+  '../task/tasks'
+], function(_, Backbone, Tasks) {
+  var List = Backbone.Model.extend({
+    initialize: function() {
+    },
 
-app.List = Backbone.Model.extend({
-  add_task: function(task) {
-    this.tasks.add(task);
-  }
+    add_task: function(task) {
+      this.tasks.add(task);
+    }
+  });
+
+  return List;
 });
 

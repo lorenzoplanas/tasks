@@ -1,5 +1,9 @@
-var app = app || {};
+define([
+  'underscore',
+  'backbone'
+], function(_, Backbone) {
+  var Task = Backbone.Model.extend({});
 
-app.Task = Backbone.Model.extend({
+  return Task;
 });
 
