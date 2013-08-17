@@ -22,3 +22,9 @@ ul
 #lists li
   { line-height:1.6em; padding:.4em .8em; border:.1em solid #ddd; font-size:.9em; }
 
+.modal
+  { position:fixed; top:20%; right:40%; left:40%;
+    padding:1em 4em; width:20%; border:.1em solid #ccc;
+    background:white;}
+.modal input[type="text"]
+  { border:.1em solid #777; padding:.4em; }
