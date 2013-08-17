@@ -1,14 +1,20 @@
 define([
   'underscore',
   'backbone',
-  '../task/task'
-], function(_, Backbone, Task) {
+  '../task/task',
+  '../bus'
+], function(_, Backbone, Task, Bus) {
   var AddTaskModalView = Backbone.View.extend({
     tagName: 'div',
     className: 'modal',
+
     events : {
       "click .close" : "close",
       "submit form" : "create_task"
+    },
+
+    initialize: function(options) {
+      this.list_id = options.list_id
     },
 
     template:
@@ -26,20 +32,19 @@ define([
 
     create_task: function(event) {
       event.preventDefault();
-      task_name = this.$('input').val();
-      task      = new Task({ name: task_name });
-      list      = window.lists.at(0);
+      attributes = { 
+        name:     this.$('input').val(),
+        list_id:  this.list_id
+      };
 
-      list.add_task(task);
-      task.save();
-      list.save();
-
-      this.remove();
-      window.lists_view.render();
+      Bus.trigger('task:create', attributes);
+      this.close();
     },
 
     close: function() {
       event.preventDefault();
+      Bus.off(null, null, this);
+      this.off();
       this.remove();
     }
   });

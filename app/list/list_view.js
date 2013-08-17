@@ -2,23 +2,29 @@ define([
   'underscore',
   'backbone',
   '../task/task_view',
-  './add_task_modal_view'
-], function(_, Backbone, TaskView, AddTaskModalView) {
+  './add_task_modal_view',
+  '../bus',
+  '../task/task'
+], function(_, Backbone, TaskView, AddTaskModalView, Bus, Task) {
   var ListView = Backbone.View.extend({
     tagName: 'ul',
     events: {
-      "dragover"      : "on_dragover",
-      "drop"          : "on_drop",
+      "dragover"            : "on_dragover",
+      "drop"                : "on_drop",
       "click .header .add"  : "add_task_modal",
     },
 
+    initialize: function() {
+    },
+
     render: function() {
+      Bus.bind('task:create', this.create_task, this);
       link    = "<a href='#' class='add'>+</a>";
       markup  = this.model.get('name') + link;
 
       this.$el.append($('<li />').html(markup).addClass('header'));
 
-      tasks = this.model.tasks;
+      var tasks = this.model.tasks;
       tasks.fetch();
 
       for (i = 0; i < tasks.length; i ++) {
@@ -32,8 +38,17 @@ define([
 
     add_task_modal: function(event) {
       event.preventDefault();
-      this.modal = new AddTaskModalView();
-      this.modal.render();
+      (new AddTaskModalView({ list_id: this.model.id })).render();
+    },
+
+    create_task: function(args) {
+      if (args.list_id != this.model.id)
+        return(this);
+
+      var task = new Task(attributes);
+      this.model.tasks.add(task);
+      task.save();
+      this.render();
     },
 
     on_dragover: function(event) {
@@ -48,7 +63,8 @@ define([
       var task_id = payload[0];
       var list_id = payload[1];
       var list    = window.lists.get(list_id);
-      //list.tasks.fetch();
+
+      list.tasks.fetch();
       var task    = list.tasks.get(task_id);
       var task_markup = document.getElementById(task_id);
 
