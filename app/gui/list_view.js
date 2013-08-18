@@ -11,19 +11,21 @@ define([
     events: {
       "dragover"            : "on_dragover",
       "drop"                : "on_drop",
-      "click .header .add"  : "add_task_modal",
+      "click .header .add"  : "add_task_modal"
     },
 
     initialize: function(options) {
-      this.list_mediator = options.list_mediator;
+      this.task_views     = [];
+      this.list_mediator  = options.list_mediator;
       Bus.bind('task:create', this.create_task, this);
     },
 
     render: function() {
-      this.model.tasks.on('add', this.render_tasks, this);
-      this.model.tasks.on('remove', this.render_tasks, this);
+      this.model.tasks.on('add', this.render, this);
+      this.model.tasks.on('remove', this.render, this);
 
-      this.model.tasks.fetch();
+      this.remove_task_views();
+      this.$el.empty();
       this.render_header();
       this.render_tasks();
       return(this);
@@ -38,12 +40,20 @@ define([
     },
 
     render_tasks: function() {
-      for (i = 0; i < this.model.tasks.length; i ++) {
-        var task = this.model.tasks.at(i);
+      for (i = 0; i < this.model.tasks.length; i++) {
+        var task      = this.model.tasks.at(i);
         var task_view = new TaskView({ id: task.get('id'), model: task });
+        this.task_views.push(task_view);
         this.$el.append(task_view.render().$el);
       }
+
       return(this);
+    },
+
+    remove_task_views: function() {
+      for (i = 0; i < this.task_views.length; i++) {
+        this.task_views[i].close();
+      }
     },
 
     add_task_modal: function(event) {

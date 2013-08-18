@@ -34,6 +34,11 @@ define([
 
     on_drop: function(event) {
       event.preventDefault();
+    },
+
+    close: function() {
+      this.off();
+      this.remove();
     }
   });
 

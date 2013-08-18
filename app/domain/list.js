@@ -19,7 +19,7 @@ define([
     },
 
     remove_task: function(task) {
-      this.tasks.pop(task);
+      this.tasks.remove(task);
       return(this);
     }
   });
