@@ -14,7 +14,7 @@ define([
     },
 
     initialize: function(options) {
-      this.list_id = options.list_id
+      this.list_id = options.list_id;
     },
 
     template:

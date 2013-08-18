@@ -23,18 +23,18 @@ define([
     }
   };
 
-  window.lists = new Lists();
+  lists       = new Lists();
+  lists_view  = new ListsView({ collection: lists });
 
   for (i = 0; i < 3; i++) {
     list = new List({ name: 'List ' + (i + 1) });
-    window.lists.add(list);
+    lists.add(list);
     list.save();
     list.tasks = new Tasks([], { list_id: list.id });
     list.tasks.bind('change', this.save);
     generate_sample_tasks(list, i);
   }
 
-  window.lists_view = new ListsView({ collection: window.lists });
-  window.lists_view.render();
+  lists_view.render();
 });
 

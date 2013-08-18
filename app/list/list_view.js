@@ -14,31 +14,42 @@ define([
       "click .header .add"  : "add_task_modal",
     },
 
-    initialize: function() {
+    initialize: function(options) {
+      this.list_mediator = options.list_mediator;
+      Bus.bind('task:create', this.create_task, this);
     },
 
     render: function() {
-      Bus.bind('task:create', this.create_task, this);
+      this.model.tasks.on('add', this.render_tasks, this);
+      this.model.tasks.on('remove', this.render_tasks, this);
+
+      this.model.tasks.fetch();
+      this.render_header();
+      this.render_tasks();
+      return(this);
+    },
+
+    render_header: function() {
       link    = "<a href='#' class='add'>+</a>";
       markup  = this.model.get('name') + link;
 
       this.$el.append($('<li />').html(markup).addClass('header'));
+      return(this);
+    },
 
-      var tasks = this.model.tasks;
-      tasks.fetch();
-
-      for (i = 0; i < tasks.length; i ++) {
-        var task = tasks.at(i);
+    render_tasks: function() {
+      for (i = 0; i < this.model.tasks.length; i ++) {
+        var task = this.model.tasks.at(i);
         var task_view = new TaskView({ id: task.get('id'), model: task });
         this.$el.append(task_view.render().$el);
       }
-      
-      return this;
+      return(this);
     },
 
     add_task_modal: function(event) {
       event.preventDefault();
       (new AddTaskModalView({ list_id: this.model.id })).render();
+      return(this);
     },
 
     create_task: function(args) {
@@ -46,13 +57,13 @@ define([
         return(this);
 
       var task = new Task(attributes);
-      this.model.tasks.add(task);
-      task.save();
-      this.render();
+      this.model.add_task(task);
+      return(this);
     },
 
     on_dragover: function(event) {
       event.preventDefault();
+      return(this);
     },
 
     on_drop: function(event) {
@@ -60,21 +71,14 @@ define([
       var payload = event.originalEvent.dataTransfer
                       .getData("text/plain")
                       .split(':');
-      var task_id = payload[0];
-      var list_id = payload[1];
-      var list    = window.lists.get(list_id);
+      var task_id             = payload[0];
+      var origin_list_id      = payload[1];
+      var destination_list_id = this.model.id;
 
-      list.tasks.fetch();
-      var task    = list.tasks.get(task_id);
-      var task_markup = document.getElementById(task_id);
-
-      if (task) {
-        this.model.add_task(task);
-        list.tasks.pop(task_id);
-        list.save();
-        this.$el.append(task_markup);
-      }
-    }
+      this.list_mediator
+        .transfer_task(task_id, origin_list_id, destination_list_id);
+      return(this);
+    },
   });
 
   return ListView;
