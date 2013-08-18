@@ -11,7 +11,9 @@ define([
     events: {
       "dragover"            : "on_dragover",
       "drop"                : "on_drop",
-      "click .header .add"  : "add_task_modal"
+      "click .header .add"  : "add_task_modal",
+      "click .header .name" : "edit_name",
+      "submit form"         : "rename"
     },
 
     initialize: function(options) {
@@ -31,11 +33,32 @@ define([
       return(this);
     },
 
+    edit_name: function() {
+      this.$el.find('.header').remove();
+      this.$el.prepend(
+        '<li class="header">' +
+          '<form>'  +
+            '<input type="text" value="' + this.model.get('name')  + '">' +
+          '</form>' +
+        '</li>'
+      );
+      return(this);
+    },
+
+    rename: function() {
+      new_name = this.$el.find('.header input:first').val();
+      this.model.save({ name: new_name });
+      this.$el.find('.header').remove();
+      this.render_header();
+      return(this);
+    },
+
     render_header: function() {
       link    = "<a href='#' class='add'>+</a>";
-      markup  = this.model.get('name') + link;
+      name    = '<span class="name">' + this.model.get('name') + "</span>" 
+      markup  = name + link;
 
-      this.$el.append($('<li />').html(markup).addClass('header'));
+      this.$el.prepend($('<li />').html(markup).addClass('header'));
       return(this);
     },
 
