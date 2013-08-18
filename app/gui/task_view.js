@@ -6,9 +6,10 @@ define([
     tagName: 'li',
     className: 'task',
     events: {
-      "dragstart" : "on_dragstart",
-      "dragover"  : "on_dragover",
-      "drop"      : "on_drop"
+      "dragstart"     : "on_dragstart",
+      "dragover"      : "on_dragover",
+      "drop"          : "on_drop",
+      "click .delete" : "delete"
     },
 
     initialize: function() {
@@ -17,8 +18,12 @@ define([
     },
 
     render: function() {
-      this.$el.html(this.model.get('name'));
+      this.$el.html(this.model.get('name') + this.delete_link());
       return this;
+    },
+
+    delete_link: function() {
+      return('<a href="#" class="delete">x</a>');
     },
     
     on_dragstart: function(event) {
@@ -34,6 +39,10 @@ define([
 
     on_drop: function(event) {
       event.preventDefault();
+    },
+
+    delete: function(event) {
+      this.model.destroy();
     },
 
     close: function() {
