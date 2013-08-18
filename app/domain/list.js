@@ -1,7 +1,7 @@
 define([
   'underscore',
   'backbone',
-  '../task/tasks'
+  './tasks'
 ], function(_, Backbone, Tasks) {
   var List = Backbone.Model.extend({
     initialize: function() {

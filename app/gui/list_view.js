@@ -1,11 +1,11 @@
 define([
   'underscore',
   'backbone',
-  '../task/task_view',
-  './add_task_modal_view',
-  '../bus',
-  '../task/task'
-], function(_, Backbone, TaskView, AddTaskModalView, Bus, Task) {
+  '../domain/bus',
+  '../domain/task',
+  './task_view',
+  './add_task_modal_view'
+], function(_, Backbone, Bus, Task, TaskView, AddTaskModalView) {
   var ListView = Backbone.View.extend({
     tagName: 'ul',
     events: {

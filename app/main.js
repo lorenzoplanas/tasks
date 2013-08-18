@@ -1,11 +1,11 @@
 define([
   'underscore',
   'backbone',
-  './list/list',
-  './list/lists',
-  './task/task',
-  './task/tasks',
-  './list/lists_view'
+  './domain/list',
+  './domain/lists',
+  './domain/task',
+  './domain/tasks',
+  './gui/lists_view'
 ], function(_, Backbone, List, Lists, Task, Tasks, ListsView) {
   var TASKS_PER_LIST = 5;
 

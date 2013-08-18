@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  './mediator',
+  '../domain/list_mediator',
   './list_view'
 ], function($, _, Backbone, ListMediator, ListView) {
   var ListsView = Backbone.View.extend({

@@ -1,8 +1,8 @@
 define([
   'underscore',
   'backbone',
-  '../task/task',
-  '../bus'
+  '../domain/task',
+  '../domain/bus'
 ], function(_, Backbone, Task, Bus) {
   var AddTaskModalView = Backbone.View.extend({
     tagName: 'div',
